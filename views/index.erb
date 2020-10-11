@@ -1,1 +1,12 @@
-<h1>Hello, World!</h1>
+<% if flash[:error] %>
+  ❗️ <%= flash[:error] %>
+<% end %>
+
+<form action="/tweets" method="POST">
+  <label>
+    Tweet URL
+    <input name="id"/>
+  </label>
+
+  <button>Submit</button>
+</form>
