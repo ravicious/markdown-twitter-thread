@@ -1,8 +1,13 @@
 require 'sinatra/base'
 require 'sinatra/flash'
+require 'erubi'
+require 'dry-monads'
+
+require_relative 'lib/twitter_client'
 
 class App < Sinatra::Base
   enable :sessions
+  set :erb, :escape_html => true
   register Sinatra::Flash
 
   get '/' do
@@ -22,23 +27,28 @@ class App < Sinatra::Base
   end
 
   get '/tweets/:id' do
-    tweet_id = parse_string_to_integer(params[:id])
+    tweet_id = parse_tweet_id(params[:id])
+
+    tweet_result = twitter_client.get_tweet(tweet_id)
 
     erb :'tweets/show', locals: {
-      tweet_id: tweet_id
+      tweet_result: tweet_result,
     }
   end
 
-  TWEET_ID_REGEX = /(\d+)\z/
+  TWEET_ID_REGEX = /(\A|\/)(\d+)\z/
 
   def parse_tweet_id(string)
     match = TWEET_ID_REGEX.match(string)
-    match && match[0]&.to_i
+    match && match[2]
   end
 
-  def parse_string_to_integer(string)
-    int = string.to_i
-
-    string == int.to_s && int
+  def twitter_client
+    @twitter_client ||= TwitterClient.new
   end
+end
+
+if App.development?
+  require 'dotenv/load'
+  require 'pry'
 end

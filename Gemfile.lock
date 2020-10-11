@@ -1,6 +1,17 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    coderay (1.1.3)
+    concurrent-ruby (1.1.7)
+    dotenv (2.7.6)
+    dry-core (0.4.9)
+      concurrent-ruby (~> 1.0)
+    dry-equalizer (0.3.0)
+    dry-monads (1.3.5)
+      concurrent-ruby (~> 1.0)
+      dry-core (~> 0.4, >= 0.4.4)
+      dry-equalizer
+    erubi (1.9.0)
     faraday (1.0.1)
       multipart-post (>= 1.2, < 3)
     faraday_middleware (1.0.0)
@@ -9,9 +20,13 @@ GEM
     listen (3.2.1)
       rb-fsevent (~> 0.10, >= 0.10.3)
       rb-inotify (~> 0.9, >= 0.9.10)
+    method_source (1.0.0)
     multipart-post (2.1.1)
     mustermann (1.1.1)
       ruby2_keywords (~> 0.0.1)
+    pry (0.13.1)
+      coderay (~> 1.1)
+      method_source (~> 1.0)
     rack (2.2.3)
     rack-protection (2.1.0)
       rack
@@ -34,8 +49,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  dotenv
+  dry-monads
+  erubi
   faraday
   faraday_middleware
+  pry
   rerun
   sinatra
   sinatra-flash
